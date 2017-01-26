@@ -1,0 +1,122 @@
+#!/bin/bash
+#set -x
+
+# ---------------------------------------------------------------------------------------- 
+# Ensure running as root. If the script is run with sudo (i.e. not root), then the
+# following will run another instance of this script as sudo.  Note, this is not a
+# child process.
+# ---------------------------------------------------------------------------------------- 
+if [ "$(id -u)" != "0" ]; then
+  exec sudo "$0" "$@" 
+fi
+
+# ---------------------------------------------------------------------------------------- 
+# Return shell prompt to normal state when Ctrl+C or Ctrl+\
+# ---------------------------------------------------------------------------------------- 
+trap 'stty sane; exit' SIGINT SIGQUIT
+
+# ---------------------------------------------------------------------------------------- 
+# Define process ID file
+# ---------------------------------------------------------------------------------------- 
+PIDFILE=/var/run/openconnect.pid
+
+# ---------------------------------------------------------------------------------------- 
+# Function: connect - wrapper for openconnect. 
+# ---------------------------------------------------------------------------------------- 
+connect()
+{
+   # Check if the PIDFILE does not exist, then start openconnect
+   if [ ! -f $PIDFILE ]; then
+      /usr/sbin/openconnect -u $NCEPUSER --no-cert-check --no-dtls --background \
+                            --no-xmlpost --force-dpd 10 --pid-file=$PIDFILE $NCEPHOST
+   else
+      echo -ne "\n You are currently connected to the NCEP VPN \n\n"
+   fi
+}
+
+# ---------------------------------------------------------------------------------------- 
+# Function: disconnect - proper way to disconnect openconnect VPN is to send SIGINT
+#                        to the process ID.
+# ---------------------------------------------------------------------------------------- 
+disconnect()
+{
+   # Check if the PID does not exist.  If it does, then kill the connection.
+   if [ ! -f $PIDFILE ]; then
+      echo -ne "\n\tYou are not connected to the NCEP VPN\n"
+   else
+      echo -ne "\n\tDisconnecting from NCEP VPN..."
+      kill -SIGINT $(cat $PIDFILE)
+      if [ $? -eq 0 ]; then echo -ne " Done!\n"; fi
+   fi
+}
+
+# ---------------------------------------------------------------------------------------- 
+# Function: inituser - This creates ~/.ncepvpn which contains the NCEP VPN username. This
+#                      file is then read for succeeding connections.  Since the script is
+#                      executed as sudo, we change the ownership of ~/.ncepvpn to the
+#                      actual user defined in SUDO_USER.
+# ---------------------------------------------------------------------------------------- 
+inituser()
+{
+    NCEPVPN_USER_CONFIG=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)/.ncepvpn
+    if [ -f $NCEPVPN_USER_CONFIG ]; then
+       NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
+       NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
+    else
+       echo "Creating $NCEPVPN_USER_CONFIG"
+       read -p "Enter NCEP VPN Hostname: " NCEPHOST
+       if [[ $NCEPHOST != https://* ]]; then NCEPHOST="https://$NCEPHOST"; fi
+       echo $NCEPHOST >> $NCEPVPN_USER_CONFIG
+       read -p "Enter your NCEP VPN Username: " NCEPUSER
+       echo $NCEPUSER >> $NCEPVPN_USER_CONFIG
+       chown $SUDO_USER:$SUDO_USER $NCEPVPN_USER_CONFIG
+    fi
+}
+
+# ---------------------------------------------------------------------------------------- 
+# Function: status -
+# ---------------------------------------------------------------------------------------- 
+status()
+{
+   if [ ! -f $PIDFILE ]; then
+      echo -e "State: Disconnected\n"
+   else
+      echo -e "State: Connected\n"
+   fi
+}
+
+# ---------------------------------------------------------------------------------------- 
+# Function: usage - Print usage when no arg is passed.
+# ---------------------------------------------------------------------------------------- 
+usage()
+{
+cat << EOF
+
+Usage: $(basename $0) [c|d]
+
+       c - Connect. Can also use "con" or "connect".
+       d - Disconnect. Can also use "dis" or "disconnect".
+
+EOF
+}
+
+# ---------------------------------------------------------------------------------------- 
+# Main script
+# ---------------------------------------------------------------------------------------- 
+case "$1" in
+
+   c|con|connect)
+      inituser
+      connect
+      ;;
+   d|dis|disconnect)
+      disconnect
+      ;;
+   *)
+      usage
+      status
+      ;;
+
+esac
+
+exit 0
