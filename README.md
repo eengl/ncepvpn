@@ -43,18 +43,11 @@ State: Disconnected
 To Connect:
 
 ```shell
-ncepvpn c
 user@computer:~$ ncepvpn c
 Creating /home/user/.ncepvpn
+Enter NCEP VPN Hostname: XXX.XXX.XXX.XXX
 Enter your NCEP VPN Username: First.Last
-GET https://XXX.XXX.XXX.XXX/
-Attempting to connect to server XXX.XXX.XXX.XXX:443
-SSL negotiation with cpvpn.ncep.noaa.gov
-Connected to HTTPS on cpvpn.ncep.noaa.gov
-Got HTTP response: HTTP/1.0 302 Object Moved
-GET https://cpvpn.ncep.noaa.gov/+webvpn+/index.html
-SSL negotiation with cpvpn.ncep.noaa.gov
-Connected to HTTPS on cpvpn.ncep.noaa.gov
+...
 Please enter your username and password.
 PASSCODE:
 ```
