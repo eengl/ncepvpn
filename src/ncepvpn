@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+#  Script: ncepvpn
+#
+#  Author: Eric Engle
+#
+# Purpose: Shell script wrapper for openconnect to easily connect to NOAA/NCEP's VPN.
+#
+# ---------------------------------------------------------------------------------------- 
 #set -x
 
 # ---------------------------------------------------------------------------------------- 

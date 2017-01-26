@@ -1,16 +1,29 @@
 #!/bin/bash
+#
+# Installer script for ncepvpn package.
+#
+# ---------------------------------------------------------------------------------------- 
 #set -x
 
+# ---------------------------------------------------------------------------------------- 
+# Set PREFIX if not already defined
+# ---------------------------------------------------------------------------------------- 
 PREFIX=${PREFIX:-/usr/local}
 
+# ---------------------------------------------------------------------------------------- 
 # Install must be performed as root
+# ---------------------------------------------------------------------------------------- 
 if [ $UID -ne 0 ]; then exit 1; fi
 
-# Destroy then create tmp directory to work in
-if [ -d tmp/ ]; then rm -rf tmp/; fi
-mkdir tmp
+# ---------------------------------------------------------------------------------------- 
+# Destroy then create build directory to work in
+# ---------------------------------------------------------------------------------------- 
+if [ -d build/ ]; then rm -rf build/; fi
+mkdir build
 
+# ---------------------------------------------------------------------------------------- 
 # Get the Linux OS Distro.
+# ---------------------------------------------------------------------------------------- 
 which lsb_release 1> /dev/null 2>&1
 if [ $? -eq 0 ]; then
    OSTYPE=$(lsb_release -a | grep "Distributor ID" | cut -d: -f 2 | tr -s '\t' ' ' | sed 's/ //g')
@@ -26,7 +39,9 @@ fi
 
 echo -e "\n\tOS Detected: $OSTYPE, $OSVERSION, $OSFAMILY\n"
 
+# ---------------------------------------------------------------------------------------- 
 # Install appropriate software packages.
+# ---------------------------------------------------------------------------------------- 
 if [ "$OSFAMILY" == "debian" ]; then
    apt-get install openconnect uml-utilities
 elif [ "$OSFAMILY" == "redhat" ]; then
@@ -40,32 +55,40 @@ elif [ "$OSFAMILY" == "redhat" ]; then
    fi
 fi
 
+# ---------------------------------------------------------------------------------------- 
 # Create sudoers rules
-cat << EOF >> tmp/openconnect
+# ---------------------------------------------------------------------------------------- 
+cat << EOF >> build/openconnect
 # Allow all users to run openconnect and ncepvpn script as sudo
 ALL ALL=(ALL) NOPASSWD: /usr/sbin/openconnect
 ALL ALL=(ALL) NOPASSWD: $PREFIX/bin/ncepvpn
 EOF
 
+# ---------------------------------------------------------------------------------------- 
 # Install openconnect rules to sudoers
+# ---------------------------------------------------------------------------------------- 
 if [ "$OSFAMILY" == "redhat" ] && [ $OSVERSION -eq 5 ]; then
    # System in Red Hat/CentOS and version is 5. There is no /etc/sudoers.d/ stuff
    # so we need to append to /etc/sudoers.
-   cat /etc/sudoers tmp/openconnect > tmp/sudoers
-   cmp tmp/sudoers /etc/sudoers 1> /dev/null 2>&1
+   cat /etc/sudoers build/openconnect > build/sudoers
+   cmp build/sudoers /etc/sudoers 1> /dev/null 2>&1
    if [ $? -ne 0 ]; then
-      visudo -c -f tmp/sudoers
+      visudo -c -f build/sudoers
       if [ $? -ne 0 ]; then exit 1; fi
-      /usr/bin/install -b -v -m 440 -D tmp/sudoers /etc/sudoers
+      /usr/bin/install -b -v -m 440 -D build/sudoers /etc/sudoers
    fi
 else
-   visudo -c -f tmp/openconnect
+   visudo -c -f build/openconnect
    if [ $? -ne 0 ]; then exit 1; fi
-   /usr/bin/install -v -m 440 -D tmp/openconnect /etc/sudoers.d/openconnect
+   /usr/bin/install -v -m 440 -D build/openconnect /etc/sudoers.d/openconnect
 fi
 
+# ---------------------------------------------------------------------------------------- 
 # Install ncepvpn
+# ---------------------------------------------------------------------------------------- 
 /usr/bin/install -v -m 755 -D src/ncepvpn $PREFIX/bin/ncepvpn
 
+# ---------------------------------------------------------------------------------------- 
 # Cleanup
-rm -rf tmp/
+# ---------------------------------------------------------------------------------------- 
+rm -rf build/
