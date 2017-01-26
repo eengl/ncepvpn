@@ -6,7 +6,7 @@
 
 ## Motivation
 
-Simple...Cisco's AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VPN.
+Cisco AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VPN.
 
 ## Requirements
 
