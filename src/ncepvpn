@@ -27,6 +27,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
 PIDFILE=/var/run/openconnect.pid
+NCEPVPN_VERSION="1.0.0"
 
 # ---------------------------------------------------------------------------------------- 
 # Function: connect - wrapper for openconnect. 
@@ -105,6 +106,7 @@ Usage: $(basename $0) [c|d]
        c - Connect. Can also use "con" or "connect".
        d - Disconnect. Can also use "dis" or "disconnect".
 
+ncepvpn version $NCEPVPN_VERSION
 EOF
 }
 
