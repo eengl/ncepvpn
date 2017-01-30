@@ -105,8 +105,7 @@ Usage: $(basename $0) [c|d]
 
        c - Connect. Can also use "con" or "connect".
        d - Disconnect. Can also use "dis" or "disconnect".
-
-ncepvpn version $NCEPVPN_VERSION
+       
 EOF
 }
 
@@ -125,6 +124,7 @@ case "$1" in
    *)
       usage
       status
+      echo -ne "$(basename $0) version $NCEPVPN_VERSION\n"
       ;;
 
 esac
