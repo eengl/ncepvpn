@@ -53,6 +53,9 @@ elif [ "$OSFAMILY" == "redhat" ]; then
       yum -y install epel-release
       yum -y install openconnect vpnc
    fi
+else
+   echo -e "\nerror: Unsupported OS\n"
+   exit 1
 fi
 
 # ---------------------------------------------------------------------------------------- 
