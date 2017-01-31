@@ -27,7 +27,14 @@ sudo ./install.sh
 
 ## Usage
 
-On First run, `ncepvpn` will ask for your the NCEP VPN hostname and your username.  This information will be stored in `$HOME/.ncepvpn`.
+On First run, `ncepvpn` will ask for your the NCEP VPN hostname and your username.  This information will be stored in `$HOME/.ncepvpn`.  Contents of `$HOME/.ncepvpn` are the following:
+
+```
+<NCEPVPN_HOSTNAME>
+<NCEPVPN_USERNAME>
+```
+
+Usage:
 
 ```shell
 user@computer:~$ ncepvpn
