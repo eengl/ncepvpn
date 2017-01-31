@@ -37,7 +37,7 @@ connect()
    # Check if the PIDFILE does not exist, then start openconnect
    if [ ! -f $PIDFILE ]; then
       /usr/sbin/openconnect -u $NCEPUSER --no-cert-check --no-dtls --background \
-                            --no-xmlpost --force-dpd 10 --pid-file=$PIDFILE $NCEPHOST
+                            --force-dpd 10 --pid-file=$PIDFILE $NCEPHOST
    else
       echo -ne "\n You are currently connected to the NCEP VPN \n\n"
    fi
