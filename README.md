@@ -20,7 +20,7 @@ Cisco AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VP
 Clone or download `ncepvpn` package.  **NOTE:**  Installation requires sudo/root access.
 
 ```shell
-cd ncepvpn
+cd ncepvpn-X.Y.Z/
 export PREFIX=/path/to/install # This is optional.  Default install path is /usr/local/bin/.
 sudo ./install.sh
 ```
