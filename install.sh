@@ -63,7 +63,6 @@ fi
 # ---------------------------------------------------------------------------------------- 
 cat << EOF >> build/openconnect
 # Allow all users to run openconnect and ncepvpn script as sudo
-ALL ALL=(ALL) NOPASSWD: /usr/sbin/openconnect
 ALL ALL=(ALL) NOPASSWD: $PREFIX/bin/ncepvpn
 EOF
 
