@@ -27,7 +27,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
 PIDFILE=/var/run/openconnect.pid
-NCEPVPN_VERSION="1.0.0"
+NCEPVPN_VERSION="1.0.1"
 
 # ---------------------------------------------------------------------------------------- 
 # Function: connect - wrapper for openconnect. 
@@ -36,8 +36,7 @@ connect()
 {
    # Check if the PIDFILE does not exist, then start openconnect
    if [ ! -f $PIDFILE ]; then
-      /usr/sbin/openconnect -u $NCEPUSER --no-cert-check --no-dtls --background \
-                            --force-dpd 10 --pid-file=$PIDFILE $NCEPHOST
+      /usr/sbin/openconnect -u $NCEPUSER --background --pid-file=$PIDFILE $NCEPHOST
    else
       echo -ne "\n You are currently connected to the NCEP VPN \n\n"
    fi
