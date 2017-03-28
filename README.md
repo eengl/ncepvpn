@@ -8,16 +8,30 @@
 
 Cisco's AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VPN.
 
-## Requirements
+## Supported Operating Systems
+
+The following Linux operating systems have been tested
 
 * CentOS 5, 6, and 7
 * RHEL 5, 6, and 7
 * Fedora 24 and 25
 * Ubuntu 14.04 LTS+
 
+## Software Dependencies
+
+* openconnect
+* vpnc
+
 ## Installation
 
-Clone or download `ncepvpn` package.  **NOTE:**  Installation requires sudo/root access.
+Clone or download `ncepvpn` package.  **NOTE:**  Installation requires sudo/root access.  The install script will perform the following:
+
+* Determine the Linux operating system
+* Install the required software via the system's default software package manager.
+* Install sudo rules
+* Install ncepvpn
+
+### Instructions
 
 ```shell
 cd ncepvpn-X.Y.Z/
