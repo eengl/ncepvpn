@@ -86,7 +86,7 @@ inituser()
     # Openconnect config file must be present (can be 0-bytes)
     if [ ! -f $OPENCONNECT_CONFIG ]; then
        touch $OPENCONNECT_CONFIG
-       chown $SUDO_USER:$SUDO_USER $OPECONNECT_CONFIG
+       chown $SUDO_USER:$SUDO_USER $OPENCONNECT_CONFIG
     fi
 }
 
