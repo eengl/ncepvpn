@@ -6,7 +6,7 @@
 
 ## Motivation
 
-Cisco AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VPN.
+Cisco's AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VPN.
 
 ## Requirements
 
@@ -64,3 +64,7 @@ To Disconnect:
 ```shell
 ncepvpn d
 ```
+
+## Notes
+
+`ncepvpn` v1.1.0+ will create an openconnect config file, `.openconnect`, in the user's home directory.  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The required flags will remain for `ncepvpn` to interface with openconnect properly (`-u`, `--background`, and `--pid-file=`).
