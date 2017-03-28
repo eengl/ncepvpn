@@ -82,6 +82,12 @@ inituser()
        echo $NCEPUSER >> $NCEPVPN_USER_CONFIG
        chown $SUDO_USER:$SUDO_USER $NCEPVPN_USER_CONFIG
     fi
+    
+    # Openconnect config file must be present (can be 0-bytes)
+    if [ ! -f $OPENCONNECT_CONFIG ]; then
+       touch $OPENCONNECT_CONFIG
+       chown $SUDO_USER:$SUDO_USER $OPECONNECT_CONFIG
+    fi
 }
 
 # ---------------------------------------------------------------------------------------- 
