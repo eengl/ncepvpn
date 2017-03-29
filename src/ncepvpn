@@ -67,27 +67,32 @@ disconnect()
 # ---------------------------------------------------------------------------------------- 
 inituser()
 {
-    USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
-    NCEPVPN_USER_CONFIG=$USER_HOME/.ncepvpn
-    OPENCONNECT_CONFIG=$USER_HOME/.openconnect
-    if [ -f $NCEPVPN_USER_CONFIG ]; then
-       NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
-       NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
-    else
-       echo "Creating $NCEPVPN_USER_CONFIG"
-       read -p "Enter NCEP VPN Hostname: " NCEPHOST
-       if [[ $NCEPHOST != https://* ]]; then NCEPHOST="https://$NCEPHOST"; fi
-       echo $NCEPHOST >> $NCEPVPN_USER_CONFIG
-       read -p "Enter your NCEP VPN Username: " NCEPUSER
-       echo $NCEPUSER >> $NCEPVPN_USER_CONFIG
-       chown $SUDO_USER:$SUDO_USER $NCEPVPN_USER_CONFIG
-    fi
+   checkconfig
+   if [ -f $NCEPVPN_USER_CONFIG ]; then
+      NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
+      NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
+   else
+      echo "Creating $NCEPVPN_USER_CONFIG"
+      read -p "Enter NCEP VPN Hostname: " NCEPHOST
+      if [[ $NCEPHOST != https://* ]]; then NCEPHOST="https://$NCEPHOST"; fi
+      echo $NCEPHOST >> $NCEPVPN_USER_CONFIG
+      read -p "Enter your NCEP VPN Username: " NCEPUSER
+      echo $NCEPUSER >> $NCEPVPN_USER_CONFIG
+      chown $SUDO_USER:$SUDO_USER $NCEPVPN_USER_CONFIG
+   fi
     
-    # Openconnect config file must be present (can be 0-bytes)
-    if [ ! -f $OPENCONNECT_CONFIG ]; then
-       touch $OPENCONNECT_CONFIG
-       chown $SUDO_USER:$SUDO_USER $OPENCONNECT_CONFIG
-    fi
+   # Openconnect config file must be present (can be 0-bytes)
+   if [ ! -f $OPENCONNECT_CONFIG ]; then
+      touch $OPENCONNECT_CONFIG
+      chown $SUDO_USER:$SUDO_USER $OPENCONNECT_CONFIG
+   fi
+}
+
+checkconfig()
+{
+   USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
+   NCEPVPN_USER_CONFIG=$USER_HOME/.ncepvpn
+   OPENCONNECT_CONFIG=$USER_HOME/.openconnect
 }
 
 # ---------------------------------------------------------------------------------------- 
@@ -116,6 +121,10 @@ Usage: $(basename $0) [c|d]
        c - Connect. Can also use "con" or "connect".
        d - Disconnect. Can also use "dis" or "disconnect".
        
+Config:
+   NCEPVPN Config File: $NCEPVPN_USER_CONFIG
+   opeconnect Config File: $OPENCONNECT_CONFIG
+   
 EOF
 }
 
@@ -132,6 +141,7 @@ case "$1" in
       disconnect
       ;;
    *)
+      checkconfig
       usage
       status
       ;;
