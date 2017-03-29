@@ -44,7 +44,7 @@ connect()
 }
 
 # ---------------------------------------------------------------------------------------- 
-# Function: disconnect - proper way to disconnect openconnect VPN is to send SIGINT
+# Function: disconnect - Proper way to disconnect openconnect VPN is to send SIGINT
 #                        to the process ID.
 # ---------------------------------------------------------------------------------------- 
 disconnect()
@@ -60,7 +60,7 @@ disconnect()
 }
 
 # ----------------------------------------------------------------------------------------
-# Function: getConfigFiles - Get config file names for ncepvpn and openconnect
+# Function: getConfigFiles - Get config file names for ncepvpn and openconnect.
 # ----------------------------------------------------------------------------------------
 getConfigFiles()
 {
@@ -77,7 +77,10 @@ getConfigFiles()
 # ---------------------------------------------------------------------------------------- 
 initUser()
 {
+   # Get the config file names
    getConfigFiles
+   
+   # Test if ncepvpn config file is present.  If so, then read from it.  If not, make it.
    if [ -f $NCEPVPN_USER_CONFIG ]; then
       NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
       NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
@@ -91,7 +94,8 @@ initUser()
       chown $SUDO_USER:$SUDO_USER $NCEPVPN_USER_CONFIG
    fi
     
-   # Openconnect config file must be present (can be 0-bytes)
+   # Openconnect config file must be present or else openconnect will error.  The file
+   # can be empty (i.e. no config options inside).
    if [ ! -f $OPENCONNECT_CONFIG ]; then
       touch $OPENCONNECT_CONFIG
       chown $SUDO_USER:$SUDO_USER $OPENCONNECT_CONFIG
@@ -99,7 +103,8 @@ initUser()
 }
 
 # ---------------------------------------------------------------------------------------- 
-# Function: status -
+# Function: status - Echo the status of the openconnect VPN connection.  Here we are
+#                    simply testing if PIDFILE is present.
 # ---------------------------------------------------------------------------------------- 
 status()
 {
