@@ -122,7 +122,7 @@ usage()
 {
 cat << EOF
 
-Info: $(basename $0)-$NCEPVPN_VERSION
+$(basename $0) version $NCEPVPN_VERSION
 
 Usage: $(basename $0) [c|d]
 
