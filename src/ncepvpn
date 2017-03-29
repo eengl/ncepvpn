@@ -109,6 +109,8 @@ usage()
 {
 cat << EOF
 
+Info: $(basename $0)-$NCEPVPN_VERSION
+
 Usage: $(basename $0) [c|d]
 
        c - Connect. Can also use "con" or "connect".
@@ -130,7 +132,6 @@ case "$1" in
       disconnect
       ;;
    *)
-      echo -ne "$(basename $0) version $NCEPVPN_VERSION\n"
       usage
       status
       ;;
