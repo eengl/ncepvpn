@@ -55,6 +55,7 @@ disconnect()
    else
       echo -ne "\n\tDisconnecting from NCEP VPN..."
       kill -SIGINT $(cat $PIDFILE)
+      sleep 2
       if [ $? -eq 0 ]; then echo -ne " Done!\n"; fi
    fi
 }
