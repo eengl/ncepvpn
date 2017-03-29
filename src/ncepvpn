@@ -59,15 +59,25 @@ disconnect()
    fi
 }
 
+# ----------------------------------------------------------------------------------------
+# Function: getConfigFiles - Get config file names for ncepvpn and openconnect
+# ----------------------------------------------------------------------------------------
+getConfigFiles()
+{
+   USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
+   NCEPVPN_USER_CONFIG=$USER_HOME/.ncepvpn
+   OPENCONNECT_CONFIG=$USER_HOME/.openconnect
+}
+
 # ---------------------------------------------------------------------------------------- 
-# Function: inituser - This creates ~/.ncepvpn which contains the NCEP VPN username. This
+# Function: initUser - This creates ~/.ncepvpn which contains the NCEP VPN username. This
 #                      file is then read for succeeding connections.  Since the script is
 #                      executed as sudo, we change the ownership of ~/.ncepvpn to the
 #                      actual user defined in SUDO_USER.
 # ---------------------------------------------------------------------------------------- 
-inituser()
+initUser()
 {
-   checkconfig
+   getConfigFiles
    if [ -f $NCEPVPN_USER_CONFIG ]; then
       NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
       NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
@@ -86,13 +96,6 @@ inituser()
       touch $OPENCONNECT_CONFIG
       chown $SUDO_USER:$SUDO_USER $OPENCONNECT_CONFIG
    fi
-}
-
-checkconfig()
-{
-   USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
-   NCEPVPN_USER_CONFIG=$USER_HOME/.ncepvpn
-   OPENCONNECT_CONFIG=$USER_HOME/.openconnect
 }
 
 # ---------------------------------------------------------------------------------------- 
@@ -134,14 +137,14 @@ EOF
 case "$1" in
 
    c|con|connect)
-      inituser
+      initUser
       connect
       ;;
    d|dis|disconnect)
       disconnect
       ;;
    *)
-      checkconfig
+      getConfigFiles
       usage
       status
       ;;
