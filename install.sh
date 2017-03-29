@@ -34,7 +34,7 @@ EOF
 # ---------------------------------------------------------------------------------------- 
 visudo -c -f build/ncepvpn
 if [ $? -ne 0 ]; then exit 1; fi
-/usr/bin/install -v -m 440 -D build/openconnect /etc/sudoers.d/openconnect
+/usr/bin/install -v -m 440 -D build/ncepvpn /etc/sudoers.d/ncepvpn
 
 # ---------------------------------------------------------------------------------------- 
 # Install ncepvpn
