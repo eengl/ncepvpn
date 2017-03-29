@@ -121,9 +121,9 @@ Usage: $(basename $0) [c|d]
        c - Connect. Can also use "con" or "connect".
        d - Disconnect. Can also use "dis" or "disconnect".
        
-Config:
-   NCEPVPN Config File: $NCEPVPN_USER_CONFIG
-   opeconnect Config File: $OPENCONNECT_CONFIG
+Config Files:
+   ncepvpn: $NCEPVPN_USER_CONFIG
+   openconnect: $OPENCONNECT_CONFIG
    
 EOF
 }
