@@ -81,4 +81,6 @@ ncepvpn d
 
 ## Notes
 
-`ncepvpn` v1.1.0 and newer will create an openconnect config file, `.openconnect`, in the user's home directory.  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The required flags will remain for `ncepvpn` to interface with openconnect properly (`-u`, `--background`, and `--pid-file=`).  Please read the openconnect manual for proper syntax of the openconnect config file.
+`ncepvpn` v1.1.0 and newer will create an openconnect config file, `.openconnect`, in the user's home directory.  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The required flags will remain statically typed in the script in order for `ncepvpn` to maintain its intended behavior.  The flags are: `-u`, `--background`, and `--pid-file=`.
+
+Please read the openconnect manual for proper syntax of the openconnect config file.
