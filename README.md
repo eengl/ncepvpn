@@ -26,8 +26,6 @@ The following 64-bit Linux operating systems have been tested
 
 Clone or download `ncepvpn` package.  **NOTE:**  Installation requires sudo/root access.  The install script will perform the following:
 
-* Determine the Linux operating system
-* Install the required software via the system's default software package manager.
 * Install sudo rules
 * Install ncepvpn
 
