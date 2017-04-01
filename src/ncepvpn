@@ -94,7 +94,7 @@ initUser()
       NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
       NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
    else
-      echo "Creating $NCEPVPN_USER_CONFIG"
+      echo "Creating NCEP VPN Configuration file $NCEPVPN_USER_CONFIG"
       read -p "Enter NCEP VPN Hostname: " NCEPHOST
       if [[ $NCEPHOST != https://* ]]; then NCEPHOST="https://$NCEPHOST"; fi
       echo $NCEPHOST >> $NCEPVPN_USER_CONFIG
