@@ -26,7 +26,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # ---------------------------------------------------------------------------------------- 
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
-NCEPVPN_VERSION="1.1.0-beta"
+NCEPVPN_VERSION="1.1.0"
 OPENCONNECT=/usr/sbin/openconnect
 PIDFILE=/var/run/openconnect.pid
 
@@ -120,7 +120,7 @@ status()
    if [ ! -f $PIDFILE ]; then
       echo -e "State: Disconnected\n"
    else
-      echo -e "State: Connected\n"
+      echo -e "State: Connected since $(stat --printf=%y $PIDFILE | cut -d. -f1)\n"
    fi
 }
 
