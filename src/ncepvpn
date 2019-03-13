@@ -66,7 +66,18 @@ disconnect()
 # ----------------------------------------------------------------------------------------
 getConfigFiles()
 {
-   USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
+   OS_TYPE=$(uname)
+   if [[ $OS_TYPE == "Darwin" ]]; then
+      USER_HOME=$(dscl . -read /Users/$SUDO_USER NFSHomeDirectory | cut -d":" -f 2 | cut -c2-)
+   elif [[ $OS_TYPE == "Linux" ]]; then
+      if [ $(grep "$SUDO_USER" /etc/passwd | wc -l) -eq 0 ]; then
+         USER_HOME=$(getent passwd | grep "$SUDO_USER" | cut -d":" -f 6)
+      else
+         USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
+      fi
+   else
+      USER_HOME=$(grep "$SUDO_USER" /etc/passwd | cut -d":" -f 6)
+   fi
    NCEPVPN_USER_CONFIG=$USER_HOME/.ncepvpn
    OPENCONNECT_CONFIG=$USER_HOME/.openconnect
 }
