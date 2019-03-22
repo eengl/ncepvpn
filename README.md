@@ -10,12 +10,16 @@ Cisco's AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's 
 
 ## Supported Operating Systems
 
-The following 64-bit Linux operating systems have been tested
+The following 64-bit Linux operating systems have been tested:
 
 * CentOS 6.x, 7.x
 * RHEL 6.x, 7.x
 * Fedora 24, 25
 * Ubuntu 14.04 LTS, 16.04 LTS
+
+The following macOS versions have been tested:
+
+* macOS 10.14 (Mojave)
 
 ## Software Dependencies
 
