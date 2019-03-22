@@ -34,12 +34,12 @@ EOF
 # ---------------------------------------------------------------------------------------- 
 visudo -c -f build/ncepvpn
 if [ $? -ne 0 ]; then exit 1; fi
-/usr/bin/install -v -m 440 -D build/ncepvpn /etc/sudoers.d/ncepvpn
+/usr/bin/install -v -m 440 build/ncepvpn /etc/sudoers.d/ncepvpn
 
 # ---------------------------------------------------------------------------------------- 
 # Install ncepvpn
 # ---------------------------------------------------------------------------------------- 
-/usr/bin/install -v -m 755 -D src/ncepvpn $PREFIX/bin/ncepvpn
+/usr/bin/install -v -m 755 src/ncepvpn $PREFIX/bin/ncepvpn
 
 # ---------------------------------------------------------------------------------------- 
 # Cleanup

@@ -27,10 +27,19 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
 NCEPVPN_VERSION="1.1.2"
-OPENCONNECT=/usr/sbin/openconnect
 PIDFILE=/var/run/openconnect.pid
 OS="$(uname)"
 
+# ---------------------------------------------------------------------------------------- 
+# Set path for openconnect client
+# ---------------------------------------------------------------------------------------- 
+if [ "$OS" == "Darwin" ]; then
+   OPENCONNECT=/usr/local/bin/openconnect
+elif [ "$OS" == "Linux" ]; then
+   OPENCONNECT=/usr/sbin/openconnect
+fi
+
+# ---------------------------------------------------------------------------------------- 
 # ---------------------------------------------------------------------------------------- 
 # Function: connect - wrapper for openconnect. 
 # ---------------------------------------------------------------------------------------- 
@@ -136,6 +145,7 @@ status()
          echo -e "State: Connected since $(stat $PIDFILE | cut -d\\\" -f2)\n"
       elif [ "$OS" == "Linux" ]; then
          echo -e "State: Connected since $(stat --printf=%y $PIDFILE | cut -d. -f1)\n"
+      fi
    fi
 }
 
