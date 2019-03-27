@@ -142,7 +142,7 @@ status()
       echo -e "State: Disconnected\n"
    else
       if [ "$OS" == "Darwin" ]; then
-         echo -e "State: Connected since $(stat $PIDFILE | cut -d\\\" -f2)\n"
+         echo -e "State: Connected since $(stat $PIDFILE | cut -d\" -f2)\n"
       elif [ "$OS" == "Linux" ]; then
          echo -e "State: Connected since $(stat --printf=%y $PIDFILE | cut -d. -f1)\n"
       fi
