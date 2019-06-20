@@ -90,8 +90,12 @@ To disconnect:
 ncepvpn d
 ```
 
-## Notes
+## Openconnect Configuration
 
-`ncepvpn` v1.1.0+ will create an openconnect config file, `.openconnect`, in the user's home directory.  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The required flags will remain statically typed in the script in order for `ncepvpn` to maintain its intended behavior.  The flags are: `-u`, `--background`, and `--pid-file=`.
+`ncepvpn` v1.1.0 and newer supports a openconnect configuration file, `.openconnect`, in the user's home directory (i.e. `$HOME/.openconnect`).  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The following openconnect flags will remain hardcoded in the `ncepvpn` script to maintain its intended behavior.
+
+- `-u`: User name
+- `--background`: Run openconnect in the background
+- `--pid-file=`: Place the process ID of openconnect in the file
 
 Please read the openconnect manual for proper syntax of the openconnect config file.
