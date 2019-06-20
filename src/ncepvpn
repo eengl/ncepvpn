@@ -47,6 +47,7 @@ connect()
 {
    # Check if the PIDFILE does not exist, then start openconnect
    if [ ! -f $PIDFILE ]; then
+      echo "$MSG"
       $OPENCONNECT -u $NCEPUSER --config=$OPENCONNECT_CONFIG --background \
                             --pid-file=$PIDFILE $NCEPHOST
    else
@@ -122,6 +123,7 @@ initUser()
          NCEPHOST=$(grep ^"backup_url=" $NCEPVPN_USER_CONFIG | cut -d"=" -f 2)
       fi
       NCEPUSER=$(grep ^"user=" $NCEPVPN_USER_CONFIG | cut -d"=" -f 2)
+      MSG="Connecting to $URL_CHOICE VPN $NCEPHOST..."
    else
       echo "Creating NCEP VPN Configuration file $NCEPVPN_USER_CONFIG"
       # Primary URL
