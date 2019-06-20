@@ -26,7 +26,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # ---------------------------------------------------------------------------------------- 
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
-NCEPVPN_VERSION="1.1.2"
+NCEPVPN_VERSION="1.2.0-test"
 PIDFILE=/var/run/openconnect.pid
 OS="$(uname)"
 
@@ -112,23 +112,36 @@ initUser()
    
    # Test if ncepvpn config file is present.  If so, then read from it.  If not, make it.
    if [ -f $NCEPVPN_USER_CONFIG ]; then
-      NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
-      NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
+      grep "=" $NCEPVPN_USER_CONFIG 1> /dev/null 2>&1
+      if [ $? -ne 0 ]; then updateConfigFiles; fi
+      #NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
+      #NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
+      if [[ $URL_CHOICE == "primary" ]]; then
+         NCEPHOST=$(grep ^"primary_url=" $NCEPVPN_USER_CONFIG | cut -d"=" -f 2)
+      elif [[ $URL_CHOICE == "backup" ]]; then
+         NCEPHOST=$(grep ^"backup_url=" $NCEPVPN_USER_CONFIG | cut -d"=" -f 2)
+      fi
+      NCEPUSER=$(grep ^"user=" $NCEPVPN_USER_CONFIG | cut -d"=" -f 2)
    else
       echo "Creating NCEP VPN Configuration file $NCEPVPN_USER_CONFIG"
-      read -p "Enter NCEP VPN Hostname: " NCEPHOST
+      # Primary URL
+      read -p "Enter a Primary NCEP VPN Hostname: " NCEPHOST
       if [[ $NCEPHOST != https://* ]]; then NCEPHOST="https://$NCEPHOST"; fi
-      echo $NCEPHOST >> $NCEPVPN_USER_CONFIG
+      echo "primary_url=$NCEPHOST" >> $NCEPVPN_USER_CONFIG
+      # Backup URL
+      read -p "Enter a Backup NCEP VPN Hostname: " NCEPHOST
+      if [[ $NCEPHOST != https://* ]]; then NCEPHOST="https://$NCEPHOST"; fi
+      echo "backup_url=$NCEPHOST" >> $NCEPVPN_USER_CONFIG
       read -p "Enter your NCEP VPN Username: " NCEPUSER
-      echo $NCEPUSER >> $NCEPVPN_USER_CONFIG
-      chown $SUDO_USER:$SUDO_USER $NCEPVPN_USER_CONFIG
+      echo "user=$NCEPUSER" >> $NCEPVPN_USER_CONFIG
+      chown $SUDO_USER:$(id -gn $SUDO_USER) $NCEPVPN_USER_CONFIG
    fi
     
    # Openconnect config file must be present or else openconnect will error.  The file
    # can be empty (i.e. no config options inside).
    if [ ! -f $OPENCONNECT_CONFIG ]; then
       touch $OPENCONNECT_CONFIG
-      chown $SUDO_USER:$SUDO_USER $OPENCONNECT_CONFIG
+      chown $SUDO_USER:$(id -gn $SUDO_USER) $OPENCONNECT_CONFIG
    fi
 }
 
@@ -150,6 +163,28 @@ status()
 }
 
 # ---------------------------------------------------------------------------------------- 
+# Function: updateConfigFiles - Updates user's ~/.ncepvpn file from a previous version.
+# ---------------------------------------------------------------------------------------- 
+updateConfigFiles()
+{
+   echo "WARNING: Your .ncepvpn file needs to be updated...Backing up your .ncepvpn file."
+   read -p "Proceed? [y|n]: " PROCEED
+   if [[ $PROCEED == "y"* ]]; then
+      cp -v $NCEPVPN_USER_CONFIG ${NCEPVPN_USER_CONFIG}.OLD
+      chown $SUDO_USER:$(id -gn $SUDO_USER) ${NCEPVPN_USER_CONFIG}.OLD
+      echo "user=$(sed -n 2p ${NCEPVPN_USER_CONFIG}.OLD)" > $NCEPVPN_USER_CONFIG
+      echo "primary_url=$(sed -n 1p ${NCEPVPN_USER_CONFIG}.OLD)" >> $NCEPVPN_USER_CONFIG
+      echo "backup_url=$(sed -n 1p ${NCEPVPN_USER_CONFIG}.OLD)" >> $NCEPVPN_USER_CONFIG
+      chown $SUDO_USER:$(id -gn $SUDO_USER) ${NCEPVPN_USER_CONFIG}
+      echo "NOTICE: backup_url = primary_url.  Please update your backup_url as needed."
+      echo "SUCCESS: Your .ncepvpn has been updated."
+   elif [[ $PROCEED == "n"* ]]; then
+      echo "Exiting..."
+      exit 0
+   fi
+}
+
+# ---------------------------------------------------------------------------------------- 
 # Function: usage - Print usage when no arg is passed.
 # ---------------------------------------------------------------------------------------- 
 usage()
@@ -158,10 +193,10 @@ cat << EOF
 
 $(basename $0) version $NCEPVPN_VERSION
 
-Usage: $(basename $0) [c|d]
+Usage: $(basename $0) ACTION CHOICE 
 
-       c - Connect. Can also use "con" or "connect".
-       d - Disconnect. Can also use "dis" or "disconnect".
+   ACTION - To connect enter "c|on|nect"; to disconnect enter "d|is|connect"   
+   CHOICE - Connect to primary VPN URL enter "p|ri|mary" [DEFAULT] or backup enter "b|ac|kup"
        
 Config Files:
    ncepvpn: $NCEPVPN_USER_CONFIG
@@ -173,6 +208,18 @@ EOF
 # ---------------------------------------------------------------------------------------- 
 # Main script
 # ---------------------------------------------------------------------------------------- 
+case "$2" in
+   p|pri|primary)
+      URL_CHOICE="primary"
+      ;;
+   b|bac|backup)
+      URL_CHOICE="backup"
+      ;;
+   *)
+      URL_CHOICE="primary"
+      ;;
+esac
+
 case "$1" in
 
    c|con|connect)
