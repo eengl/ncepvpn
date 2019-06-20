@@ -195,7 +195,7 @@ cat << EOF
 
 $(basename $0) version $NCEPVPN_VERSION
 
-Usage: $(basename $0) ACTION CHOICE 
+Usage: $(basename $0) ACTION [CHOICE] 
 
    ACTION - To connect enter "c|on|nect"; to disconnect enter "d|is|connect"   
    CHOICE - Connect to primary VPN URL enter "p|ri|mary" [DEFAULT] or backup enter "b|ac|kup"
