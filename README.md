@@ -42,39 +42,49 @@ sudo ./install.sh
 
 ## Usage
 
-On first connection attempt, `ncepvpn` will ask for your the NCEP VPN hostname and your username.  This information will be stored in `$HOME/.ncepvpn`.  Contents of `$HOME/.ncepvpn` are the following:
+On first connection attempt, `ncepvpn` will ask for primary and backup NCEP VPN URLs and your username.  Because this is a public repository, the NCEP VPN hostnames will not be given.  This information will be stored in `$HOME/.ncepvpn`.  Contents of `$HOME/.ncepvpn` are the following:
 
 ```
-<NCEPVPN_HOSTNAME>
-<NCEPVPN_USERNAME>
+primary_url=...
+backup_url=...
+user=...
 ```
 
 Usage:
 
 ```shell
-user@computer:~$ ncepvpn
+$ ncepvpn
+ncepvpn version X.Y.Z
 
-Usage: ncepvpn [c|d]
+Usage: ncepvpn ACTION [CHOICE]
 
-       c - Connect. Can also use "con" or "connect".
-       d - Disconnect. Can also use "dis" or "disconnect".
+   ACTION - To connect enter "c|on|nect"; to disconnect enter "d|is|connect"
+   CHOICE - Connect to primary VPN URL enter "p|ri|mary" [DEFAULT] or backup enter "b|ac|kup"
+
+Config Files:
+   ncepvpn: /Users/ericengle/.ncepvpn
+   openconnect: /Users/ericengle/.openconnect
 
 State: Disconnected
 ```
 
-To Connect:
+To connect to the primary VPN:
 
 ```shell
-user@computer:~$ ncepvpn c
-Creating /home/user/.ncepvpn
-Enter NCEP VPN Hostname: XXX.XXX.XXX.XXX
-Enter your NCEP VPN Username: First.Last
-...
-Please enter your username and password.
-PASSCODE:
+$ ncepvpn c
 ```
 
-To Disconnect:
+```shell
+$ ncepvpn c p
+```
+
+To connect to the backup VPN:
+
+```shell
+$ ncepvpn c b
+```
+
+To disconnect:
 
 ```shell
 ncepvpn d
@@ -82,6 +92,6 @@ ncepvpn d
 
 ## Notes
 
-`ncepvpn` v1.1.0 and newer will create an openconnect config file, `.openconnect`, in the user's home directory.  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The required flags will remain statically typed in the script in order for `ncepvpn` to maintain its intended behavior.  The flags are: `-u`, `--background`, and `--pid-file=`.
+`ncepvpn` v1.1.0+ will create an openconnect config file, `.openconnect`, in the user's home directory.  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The required flags will remain statically typed in the script in order for `ncepvpn` to maintain its intended behavior.  The flags are: `-u`, `--background`, and `--pid-file=`.
 
 Please read the openconnect manual for proper syntax of the openconnect config file.
