@@ -92,10 +92,15 @@ ncepvpn d
 
 ## Openconnect Configuration
 
-`ncepvpn` v1.1.0 and newer supports a openconnect configuration file, `.openconnect`, in the user's home directory (i.e. `$HOME/.openconnect`).  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The following openconnect flags will remain hardcoded in the `ncepvpn` script to maintain its intended behavior.
+`ncepvpn` v1.1.0 and newer supports a openconnect configuration file, `.openconnect`, in the user's home directory (i.e. `$HOME/.openconnect`).  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The following openconnect flags will remain hardcoded in the `ncepvpn` script to maintain its intended behavior and interaction with the `ncepvpn` script.
 
 - `-u`: User name
 - `--background`: Run openconnect in the background
 - `--pid-file=`: Place the process ID of openconnect in the file
+
+Recommended openconnect configuration options for connecting to NCEP VPNs (**IMPORTANT:** Do not include "-" or "--" in the openconnect configuration file):
+
+- `no-dtls`
+- `token-mode=rsa`: If you have your RSA token configured on your workstation using [stoken](https://github.com/cernekee/stoken)
 
 Please read the openconnect manual for proper syntax of the openconnect config file.
