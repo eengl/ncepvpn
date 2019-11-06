@@ -26,7 +26,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # ---------------------------------------------------------------------------------------- 
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
-NCEPVPN_VERSION="1.2.0-test"
+NCEPVPN_VERSION="1.2.0"
 PIDFILE=/var/run/openconnect.pid
 OS="$(uname)"
 
