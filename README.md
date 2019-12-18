@@ -19,6 +19,7 @@ The following 64-bit Linux operating systems have been tested:
 The following macOS versions have been tested:
 
 * macOS 10.14 (Mojave)
+* macOS 10.15 (Catalina)
 
 ## Software Dependencies
 
