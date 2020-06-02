@@ -26,7 +26,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # ---------------------------------------------------------------------------------------- 
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
-NCEPVPN_VERSION="1.2.0"
+NCEPVPN_VERSION="2.0.0"
 PIDFILE=/var/run/openconnect.pid
 OS="$(uname)"
 
@@ -39,7 +39,6 @@ elif [ "$OS" == "Linux" ]; then
    OPENCONNECT=/usr/sbin/openconnect
 fi
 
-# ---------------------------------------------------------------------------------------- 
 # ---------------------------------------------------------------------------------------- 
 # Function: connect - wrapper for openconnect. 
 # ---------------------------------------------------------------------------------------- 
@@ -115,8 +114,6 @@ initUser()
    if [ -f $NCEPVPN_USER_CONFIG ]; then
       grep "=" $NCEPVPN_USER_CONFIG 1> /dev/null 2>&1
       if [ $? -ne 0 ]; then updateConfigFiles; fi
-      #NCEPHOST=$(sed -n 1p $NCEPVPN_USER_CONFIG)
-      #NCEPUSER=$(sed -n 2p $NCEPVPN_USER_CONFIG)
       if [[ $URL_CHOICE == "primary" ]]; then
          NCEPHOST=$(grep ^"primary_url=" $NCEPVPN_USER_CONFIG | cut -d"=" -f 2)
       elif [[ $URL_CHOICE == "backup" ]]; then
