@@ -20,6 +20,8 @@ The following macOS versions have been tested:
 
 * macOS 10.14 (Mojave)
 * macOS 10.15 (Catalina)
+* macOS 11 (Big Sur)
+* macOS 12 (Monterey)
 
 ## Software Dependencies
 
