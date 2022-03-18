@@ -26,15 +26,21 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 # ---------------------------------------------------------------------------------------- 
 # Define process ID file
 # ---------------------------------------------------------------------------------------- 
-NCEPVPN_VERSION="2.0.0"
+NCEPVPN_VERSION="2.0.1"
 PIDFILE=/var/run/openconnect.pid
 OS="$(uname)"
+ARCH="$(uname -p)"
 
 # ---------------------------------------------------------------------------------------- 
 # Set path for openconnect client
 # ---------------------------------------------------------------------------------------- 
 if [ "$OS" == "Darwin" ]; then
-   OPENCONNECT=/usr/local/bin/openconnect
+   # Assumes OpenConnect installed via Homebrew
+   if [ "$ARCH" == "arm" ]; then
+      OPENCONNECT=/opt/homebrew/bin
+   elif [ "$ARCH" == "x86_64" ]; then
+      OPENCONNECT=/usr/local/bin/openconnect
+   fi
 elif [ "$OS" == "Linux" ]; then
    OPENCONNECT=/usr/sbin/openconnect
 fi
@@ -76,10 +82,9 @@ disconnect()
 # ----------------------------------------------------------------------------------------
 getConfigFiles()
 {
-   OS_TYPE=$(uname)
-   if [[ $OS_TYPE == "Darwin" ]]; then
+   if [ "$OS" == "Darwin" ]; then
       USER_HOME=$(dscl . -read /Users/$SUDO_USER NFSHomeDirectory | cut -d":" -f 2 | cut -c2-)
-   elif [[ $OS_TYPE == "Linux" ]]; then
+   elif [ "$OS" == "Linux" ]; then
       if [ $(grep "$SUDO_USER" /etc/passwd | wc -l) -eq 0 ]; then
          USER_HOME=$(getent passwd | grep "$SUDO_USER" | cut -d":" -f 6)
       else
