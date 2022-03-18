@@ -39,7 +39,11 @@ if [ $? -ne 0 ]; then exit 1; fi
 # ---------------------------------------------------------------------------------------- 
 # Install ncepvpn
 # ---------------------------------------------------------------------------------------- 
-/usr/bin/install -d -v -m 755 src/ncepvpn $PREFIX/bin/ncepvpn
+if [ ! -d $PREFIX/bin ]; then
+   mkdir -p $PREFIX/bin
+   chmod -R 775 $PREFIX/bin
+fi
+/usr/bin/install -v -m 755 src/ncepvpn $PREFIX/bin/ncepvpn
 
 # ---------------------------------------------------------------------------------------- 
 # Cleanup
