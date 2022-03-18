@@ -21,7 +21,7 @@ The following macOS versions have been tested:
 * macOS 10.14 (Mojave)
 * macOS 10.15 (Catalina)
 * macOS 11 (Big Sur)
-* macOS 12 (Monterey)
+* macOS 12 (Monterey) (x86_64 and arm are supported as of v2.0.1)
 
 ## Software Dependencies
 
