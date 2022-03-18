@@ -1,16 +1,14 @@
 # ncepvpn
 
-## Synopsis
+## Introduction
 
-`ncepvpn` is a Bash shell script wrapper for connecting to NOAA/NCEP's VPN. The script uses `openconnect`, an open source Cisco AnyConnect SSL VPN compatible client. Normally, establishing a VPN connection via `openconnect` requires the user to have sudo access. This package will also install sudoer rules to allow the user to run `ncepvpn` and `openconnect` without sudo access.
+`ncepvpn` is a Bash shell script wrapper for [OpenConnect](https://www.infradead.org/openconnect/) for the purposes of connecting to NOAA/NCEP's VPN.  The script provides an easy-to-use interface rather then using OpenConnect directly.  Since OpenConnect requires `sudo` access, this package also includes sudo rules that allow user's to run openconnect without directly invoking sudo.
 
-## Motivation
-
-Cisco's AnyConnect client for 64-bit Linux simply does not work for NOAA/NCEP's VPN.
+**IMPORTANT:** NCEP VPN hostname information is purposely excluded from this package as it is not for public knowledge.
 
 ## Supported Operating Systems
 
-The following 64-bit Linux operating systems have been tested:
+The following Linux operating systems have been tested:
 
 * CentOS/RHEL 6.x, 7.x, 8.x
 * Rocky 8.x
@@ -31,10 +29,7 @@ The following macOS versions have been tested:
 
 ## Installation
 
-Clone or download `ncepvpn` package.  **NOTE:**  Installation requires sudo/root access.  The install script will perform the following:
-
-* Install sudo rules
-* Install ncepvpn
+Clone or download `ncepvpn` package.  **NOTE:**  Installation requires `sudo` access.  The script will install the sudo rules to the appropriate directory and ncepvpn to `$PREFIX`.
 
 ### Instructions
 
@@ -46,7 +41,7 @@ sudo ./install.sh
 
 ## Usage
 
-On first connection attempt, `ncepvpn` will ask for primary and backup NCEP VPN URLs and your username.  Because this is a public repository, the NCEP VPN hostnames will not be given.  This information will be stored in `$HOME/.ncepvpn`.  Contents of `$HOME/.ncepvpn` are the following:
+On first connection attempt, `ncepvpn` will ask for primary and backup NCEP VPN URLs and your NCEP VPN username.  This information will be stored in `$HOME/.ncepvpn` and have the following format:
 
 ```
 primary_url=...
@@ -94,17 +89,17 @@ To disconnect:
 ncepvpn d
 ```
 
-## Openconnect Configuration
+## OpenConnect Configuration
 
-`ncepvpn` v1.1.0 and newer supports a openconnect configuration file, `.openconnect`, in the user's home directory (i.e. `$HOME/.openconnect`).  This gives the user the flexibility to add openconnect flags without the need to modify the `ncepvpn` script.  The following openconnect flags will remain hardcoded in the `ncepvpn` script to maintain its intended behavior and interaction with the `ncepvpn` script.
+`ncepvpn` uses an OpenConnect configuration file, `$HOME/.openconnect`.  This gives the user the flexibility to modify the OpenConnect connection behavior without the need to modify the `ncepvpn` script.  The following OpenConnect flags will remain hardcoded in the `ncepvpn` script to maintain its intended behavior and interaction with the `ncepvpn` script.
 
-- `-u`: User name
-- `--background`: Run openconnect in the background
-- `--pid-file=`: Place the process ID of openconnect in the file
+* `-u`: Username
+* `--background`: Tells OpenConnect to run in the background
+* `--pid-file=`: Place the process ID of openconnect in the file
 
-Recommended openconnect configuration options for connecting to NCEP VPNs (**IMPORTANT:** Do not include "-" or "--" in the openconnect configuration file):
+Recommended OpenConnect configuration options for connecting to NCEP VPNs (**IMPORTANT:** Do not include "-" or "--" in the OpenConnect configuration file):
 
-- `no-dtls`
-- `token-mode=rsa`: If you have your RSA token configured on your workstation using [stoken](https://github.com/cernekee/stoken)
+* `no-dtls`
+* `token-mode=rsa`: If you have your RSA token configured on your workstation using [stoken](https://github.com/cernekee/stoken)
 
-Please read the openconnect manual for proper syntax of the openconnect config file.
+Please consult the OpenConnect manual for proper syntax.
