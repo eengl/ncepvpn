@@ -10,17 +10,15 @@
 
 The following Linux operating systems have been tested:
 
-* CentOS/RHEL 6.x, 7.x, 8.x
-* Rocky 8.x
-* Fedora 24+
-* Ubuntu 16.04 LTS, 18.04 LTS, 20.04 LTS
+* CentOS/RHEL/Rocky 8.x, 9.x
+* Fedora 35+
+* Ubuntu 20.04 LTS+
 
 The following macOS versions have been tested:
 
-* macOS 10.14 (Mojave)
-* macOS 10.15 (Catalina)
 * macOS 11 (Big Sur)
-* macOS 12 (Monterey) **_(x86_64 and arm are supported as of v2.0.1)_**
+* macOS 12 (Monterey) **_(x86_64 and arm64 are supported as of v2.0.1)_**
+* macOS 13 (Ventura)
 
 ## Software Dependencies
 
