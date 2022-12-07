@@ -29,7 +29,7 @@ trap 'stty sane; exit' SIGINT SIGQUIT
 NCEPVPN_VERSION="2.1.0"
 PIDFILE=/var/run/openconnect.pid
 OS="$(uname)"
-ARCH="$(uname -p)"
+ARCH="$(uname -m)"
 
 # ---------------------------------------------------------------------------------------- 
 # Set path for openconnect client
