@@ -14,10 +14,10 @@ The following Linux operating systems have been tested:
 * Fedora 35+
 * Ubuntu 20.04 LTS+
 
-The following macOS versions have been tested:
+The following macOS versions have been tested on **Intel and Apple Silicon**:
 
 * macOS 11 (Big Sur)
-* macOS 12 (Monterey) **_(x86_64 and arm64 are supported as of v2.0.1)_**
+* macOS 12 (Monterey)
 * macOS 13 (Ventura)
 
 ## Software Dependencies
@@ -68,11 +68,7 @@ State: Disconnected
 To connect to the primary VPN:
 
 ```shell
-$ ncepvpn c
-```
-
-```shell
-$ ncepvpn c p
+$ ncepvpn c [p]
 ```
 
 To connect to the backup VPN:
@@ -84,7 +80,7 @@ $ ncepvpn c b
 To disconnect:
 
 ```shell
-ncepvpn d
+$ ncepvpn d
 ```
 
 ## OpenConnect Configuration
