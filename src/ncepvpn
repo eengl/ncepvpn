@@ -37,7 +37,7 @@ ARCH="$(uname -m)"
 if [ "$OS" == "Darwin" ]; then
    # Assumes OpenConnect installed via Homebrew
    if [ "$ARCH" == "arm" ]; then
-      OPENCONNECT=/opt/homebrew/bin
+      OPENCONNECT=/opt/homebrew/bin/openconnect
    elif [ "$ARCH" == "x86_64" ]; then
       OPENCONNECT=/usr/local/bin/openconnect
    fi
